@@ -30,21 +30,23 @@ class Elevator {
         this.floorUp();
       if(this.requests[0] < this.floor)
         this.floorDown();
+
       if(this.waitingList.length > 0){
-        this.waitingList.forEach(function(person){
-          if(person.originFloor === this.floor){
+        for(let person of this.waitingList){
+          if(person.originFloor == this.floor){
             this._passengersEnter(person);
             this.requests.splice(this.requests.indexOf(person.originFloor), 1);
+            this.waitingList.splice(this.waitingList.indexOf(person),1);
           }
-        }.bind(this));
+        }
       }
       if(this.passengers.length > 0){
-        this.passengers.forEach(function(person){
-          if(person.destinationFloor === this.floor){
+        for(let person of this.passengers){
+          if(person.destinationFloor == this.floor){
             this._passengersLeave(person);
             this.requests.splice(this.requests.indexOf(person.destinationFloor), 1);
           }
-        }.bind(this));
+        }
       }
       this.log();
       console.log(this.requests[0]);
@@ -59,8 +61,8 @@ class Elevator {
  }
 
   _passengersLeave(person) {
-    this.passengers.slice(person, 1);
-    this.requests.slice(person.destinationFloor, 1);
+    this.passengers.splice(this.passengers.indexOf(person), 1);
+    this.requests.splice(person.destinationFloor, 1);
     console.log(`Passenger ${person.name} leaves the elevator at ${person.destinationFloor} floor`);
   }
 
