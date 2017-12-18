@@ -20,8 +20,8 @@ class Elevator {
   }
 
   stop() {
-    if(this.requests.length === 0)
-      clearInterval(this.startInterval);
+    clearInterval(this.startInterval);
+    console.log('Elevator stops...');
   }
 
   update() {
@@ -30,23 +30,38 @@ class Elevator {
         this.floorUp();
       if(this.requests[0] < this.floor)
         this.floorDown();
-      if(this.requests[0] === this.floor){
-        this._passengersEnter(this.waitingList.shift());
-        this.requests.shift();
+      if(this.waitingList.length > 0){
+        this.waitingList.forEach(function(person){
+          if(person.originFloor === this.floor){
+            this._passengersEnter(person);
+            this.requests.splice(this.requests.indexOf(person.originFloor), 1);
+          }
+        }.bind(this));
       }
-    }
-    this.log();
+      if(this.passengers.length > 0){
+        this.passengers.forEach(function(person){
+          if(person.destinationFloor === this.floor){
+            this._passengersLeave(person);
+            this.requests.splice(this.requests.indexOf(person.destinationFloor), 1);
+          }
+        }.bind(this));
+      }
+      this.log();
+      console.log(this.requests[0]);
+      console.log(this.requests[1]);
+    } else this.stop();
   }
 
   _passengersEnter(person) {
     this.passengers.push(person);
     this.requests.push(person.destinationFloor);
-    console.log('Passengers enter the elevator...');
+    console.log(`Passenger ${person.name} enters the elevator at ${person.originFloor} floor`);
  }
 
   _passengersLeave(person) {
-    this.passengers.shift(person);
-    this.requests.shift(person.destinationFloor);
+    this.passengers.slice(person, 1);
+    this.requests.slice(person.destinationFloor, 1);
+    console.log(`Passenger ${person.name} leaves the elevator at ${person.destinationFloor} floor`);
   }
 
   floorUp() {
@@ -70,7 +85,6 @@ class Elevator {
 
   log() {
     console.log(`Direction: ${this.direction} | Floor: ${this.floor}`);
-    console.log('\n');
   }
 }
 
