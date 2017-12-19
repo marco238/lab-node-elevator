@@ -31,6 +31,7 @@ class Elevator {
       if(this.requests[0] < this.floor)
         this.floorDown();
 
+      this.log();
       if(this.waitingList.length > 0){
         for(let person of this.waitingList){
           if(person.originFloor == this.floor){
@@ -48,22 +49,19 @@ class Elevator {
           }
         }
       }
-      this.log();
-      console.log(this.requests[0]);
-      console.log(this.requests[1]);
     } else this.stop();
   }
 
   _passengersEnter(person) {
     this.passengers.push(person);
     this.requests.push(person.destinationFloor);
-    console.log(`Passenger ${person.name} enters the elevator at ${person.originFloor} floor`);
+    console.log(`${person.name} enters the elevator at ${person.originFloor} floor`);
  }
 
   _passengersLeave(person) {
     this.passengers.splice(this.passengers.indexOf(person), 1);
     this.requests.splice(person.destinationFloor, 1);
-    console.log(`Passenger ${person.name} leaves the elevator at ${person.destinationFloor} floor`);
+    console.log(`${person.name} leaves the elevator at ${person.destinationFloor} floor`);
   }
 
   floorUp() {

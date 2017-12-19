@@ -5,7 +5,7 @@ const elevator = new Elevator();
 const person1 = new Person("Cristian", 3, 10);
 const person2 = new Person("Marco", 4, 6);
 const person3 = new Person("Luis", 4, 7);
-const person4 = new Person("Ana", 8, -1);
+const person4 = new Person("Ana", 7, -1);
 
 elevator.start();
 elevator.call(person1);
