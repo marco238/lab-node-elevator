@@ -60,7 +60,6 @@ class Elevator {
 
   _passengersLeave(person) {
     this.passengers.splice(this.passengers.indexOf(person), 1);
-    this.requests.splice(person.destinationFloor, 1);
     console.log(`${person.name} leaves the elevator at ${person.destinationFloor} floor`);
   }
 
